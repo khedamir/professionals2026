@@ -793,3 +793,60 @@ function focusObject(objectId: string) {
 
 Этого достаточно, чтобы реализовать требуемое SPA (на React/Vue) согласно условиям конкурсного задания.
 
+---
+
+## 9. Запуск локально и деплой
+
+### 9.1. Локальный запуск
+
+1. Установите зависимости:
+
+```bash
+npm install
+```
+
+2. Создайте файл `.env` в корне проекта (рядом с `package.json`), на основе `.env.example`:
+
+```env
+DATABASE_URL=postgres://user:password@host:5432/dbname
+JWT_SECRET=your_jwt_secret_here
+```
+
+- Для локальной разработки вы можете:
+  - использовать локальный PostgreSQL;
+  - или использовать существующий PostgreSQL на Render (скопировав его `DATABASE_URL`).
+
+3. Накатите схему базы данных:
+
+```bash
+psql "%DATABASE_URL%" -f schema.sql
+```
+
+или:
+
+```bash
+psql "ВАШ_DATABASE_URL_ИЗ_ENV" -f schema.sql
+```
+
+4. Запустите сервер в режиме разработки:
+
+```bash
+npm run dev
+```
+
+Сервер будет доступен по адресу `http://localhost:3000`, REST API — по `http://localhost:3000/api`, WebSocket — по `ws://localhost:3000/ws/board`.
+
+### 9.2. Деплой (например, на Render)
+
+- Опубликуйте репозиторий на GitHub / GitLab.
+- Создайте PostgreSQL (если её ещё нет) и получите `DATABASE_URL`.
+- Накатите `schema.sql` в эту базу.
+- Создайте Web Service:
+  - Build command: `npm install && npm run build`
+  - Start command: `npm start`
+  - Переменные окружения:
+    - `DATABASE_URL` — строка подключения к PostgreSQL;
+    - `JWT_SECRET` — секрет для подписи JWT.
+
+После деплоя базовый URL станет `https://<имя_сервиса>.onrender.com`, а все описанные выше эндпоинты и WebSocket будут доступны по этому хосту.
+

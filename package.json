@@ -9,6 +9,7 @@
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts"
   },
   "dependencies": {
+    "dotenv": "^16.4.7",
     "pg": "^8.13.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
